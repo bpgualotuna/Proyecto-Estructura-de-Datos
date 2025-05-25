@@ -234,3 +234,74 @@ std::string ingresar_nombre_archivo(const char* mensaje) {
     } while (!valido || entrada.empty());
     return entrada;
 }
+
+FechaHora ingresar_fecha_validada(const char* mensaje) {
+    int dia, mes, anio, hora, minuto, segundo;
+    bool fechaValida = false;
+    std::cout << mensaje;
+
+    while (!fechaValida) {
+        // Ingresar y validar anioo
+        anio = ingresar_entero("\nAnio (1970-9999): ");
+        while (anio < 1970 || anio > 9999) {
+            std::cerr << "\nError: Anio debe estar entre 1970 y 9999.\n";
+            anio = ingresar_entero("\nAnio (1970-9999): ");
+        }
+
+        // Ingresar y validar mes
+        mes = ingresar_entero("\nMes (1-12): ");
+        while (mes < 1 || mes > 12) {
+            std::cerr << "\nError: Mes debe estar entre 1 y 12.\n";
+            mes = ingresar_entero("\nMes (1-12): ");
+        }
+
+        // Crear una fecha temporal para obtener el número máximo de días
+        FechaHora tempFecha(1, mes, anio, 0, 0, 0);
+        int maxDias = tempFecha.diasEnMes();
+        bool esBisiesto = tempFecha.esBisiesto();
+        std::string mensajeDia = "\nDia (1-" + std::to_string(maxDias) + "): ";
+
+        // Ingresar y validar día
+        dia = ingresar_entero(mensajeDia.c_str());
+        while (dia < 1 || dia > maxDias) {
+            std::cerr << "\nError: Dia debe estar entre 1 y " << maxDias << " para este mes.\n";
+            dia = ingresar_entero(mensajeDia.c_str());
+        }
+
+        // Ingresar y validar hora
+        hora = ingresar_entero("\nHora (0-23): ");
+        while (hora < 0 || hora > 23) {
+            std::cerr << "\nError: Hora debe estar entre 0 y 23.\n";
+            hora = ingresar_entero("\nHora (0-23): ");
+        }
+
+        // Ingresar y validar minuto
+        minuto = ingresar_entero("\nMinuto (0-59): ");
+        while (minuto < 0 || minuto > 59) {
+            std::cerr << "\nError: Minuto debe estar entre 0 y 59.\n";
+            minuto = ingresar_entero("\nMinuto (0-59): ");
+        }
+
+        // Ingresar y validar segundo
+        segundo = ingresar_entero("\nSegundo (0-59): ");
+        while (segundo < 0 || segundo > 59) {
+            std::cerr << "\nError: Segundo debe estar entre 0 y 59.\n";
+            segundo = ingresar_entero("\nSegundo (0-59): ");
+        }
+
+        // Crear objeto FechaHora y validar
+        FechaHora nuevaFecha(dia, mes, anio, hora, minuto, segundo);
+        if (nuevaFecha.esFechaValida()) {
+            // Mostrar si el año es bisiesto
+            std::cout << "\nEl anio " << anio << (esBisiesto ? " es bisiesto.\n" : " no es bisiesto.\n");
+            return nuevaFecha;
+        } else {
+            std::cerr << "\nError: Fecha u hora invalida. Intente de nuevo.\n";
+        }
+    }
+    return FechaHora(); // Nunca se alcanza, pero evita advertencias del compilador
+}
+
+FechaHora ingresar_fecha() {
+    return ingresar_fecha_validada("Ingrese Nueva Fecha y Hora (DD MM AAAA HH MM SS):\n");
+}
