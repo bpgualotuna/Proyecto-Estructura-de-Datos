@@ -8,7 +8,7 @@ private:
     double limiteSobregiro;
 
 public:
-    CuentaCorriente(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial, double sobregiro = 100.0);
+    CuentaCorriente(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial, int diaNacimiento, int mesNacimiento, int anioNacimiento, double sobregiro = 100.0);
     void depositar(double monto) override;
     bool retirar(double monto) override;
     char* obtenerTipo() const override;

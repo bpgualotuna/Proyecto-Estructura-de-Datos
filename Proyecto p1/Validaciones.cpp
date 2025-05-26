@@ -305,3 +305,62 @@ FechaHora ingresar_fecha_validada(const char* mensaje) {
 FechaHora ingresar_fecha() {
     return ingresar_fecha_validada("Ingrese Nueva Fecha y Hora (DD MM AAAA HH MM SS):\n");
 }
+
+
+FechaHora ingresar_fecha_nacimiento_validada(const char* mensaje) {
+    int dia, mes, anio;
+    bool fechaValida = false;
+    std::cout << mensaje;
+
+    // Obtener el año actual para validar que la fecha de nacimiento sea razonable
+    FechaHora ahora;
+    ahora.actualizarHoraActual();
+    int anioActual = ahora.obtenerAnio();
+
+    while (!fechaValida) {
+        // Ingresar y validar año
+        anio = ingresar_entero(("\nAnio (1900-" + std::to_string(anioActual) + "): ").c_str());
+        while (anio < 1900 || anio > anioActual) {
+            std::cerr << "\nError: Anio debe estar entre 1900 y " << anioActual << ".\n";
+            anio = ingresar_entero(("\nAnio (1900-" + std::to_string(anioActual) + "): ").c_str());
+        }
+
+        // Ingresar y validar mes
+        mes = ingresar_entero("\nMes (1-12): ");
+        while (mes < 1 || mes > 12) {
+            std::cerr << "\nError: Mes debe estar entre 1 y 12.\n";
+            mes = ingresar_entero("\nMes (1-12): ");
+        }
+
+        // Crear una fecha temporal para obtener el número máximo de días
+        FechaHora tempFecha(1, mes, anio, 0, 0, 0);
+        int maxDias = tempFecha.diasEnMes();
+        std::string mensajeDia = "\nDia (1-" + std::to_string(maxDias) + "): ";
+
+        // Ingresar y validar día
+        dia = ingresar_entero(mensajeDia.c_str());
+        while (dia < 1 || dia > maxDias) {
+            std::cerr << "\nError: Dia debe estar entre 1 y " << maxDias << " para este mes.\n";
+            dia = ingresar_entero(mensajeDia.c_str());
+        }
+
+        // Crear objeto FechaHora para validar la fecha
+        FechaHora fechaNacimiento(dia, mes, anio, 0, 0, 0);
+        if (fechaNacimiento.esFechaValida()) {
+            // Verificar si la edad es al menos 18 años (esto también lo verifica el constructor de Cuenta, pero se incluye aquí para feedback inmediato)
+            int edad = anioActual - anio;
+            if (ahora.obtenerMes() < mes || (ahora.obtenerMes() == mes && ahora.obtenerDia() < dia)) {
+                edad--;
+            }
+            if (edad < 18) {
+                std::cerr << "\nError: El titular debe tener al menos 18 anos. Intente de nuevo.\n";
+            } else {
+                std::cout << "\nFecha de nacimiento valida: " << dia << "/" << mes << "/" << anio << "\n";
+                return fechaNacimiento;
+            }
+        } else {
+            std::cerr << "\nError: Fecha invalida. Intente de nuevo.\n";
+        }
+    }
+    return FechaHora(); // Nunca se alcanza, pero evita advertencias del compilador
+}

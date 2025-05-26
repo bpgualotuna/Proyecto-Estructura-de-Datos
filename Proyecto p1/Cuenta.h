@@ -11,9 +11,12 @@ protected:
     char* nombrePropietario;
     double saldo;
     FechaHora fechaCreacion;
+    int edad;
 
 public:
-    Cuenta(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial);
+    Cuenta(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial,
+         int diaNacimiento, int mesNacimiento, int anioNacimiento);
+         
     virtual ~Cuenta();
     virtual void depositar(double monto) = 0;
     virtual bool retirar(double monto) = 0;
@@ -23,6 +26,7 @@ public:
     char* obtenerIdUsuario() const;
     char* obtenerNombrePropietario() const;
     FechaHora obtenerFechaCreacion() const;
+    int obtenerEdad() const;
 
     // Operadores sobrecargados
     virtual Cuenta& operator+=(double monto) = 0;

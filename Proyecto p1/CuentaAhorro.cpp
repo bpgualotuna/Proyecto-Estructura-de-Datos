@@ -1,7 +1,7 @@
 #include "CuentaAhorro.h"
 
-CuentaAhorro::CuentaAhorro(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial, double tasa)
-    : Cuenta(idCuenta, idUsuario, nombre, saldoInicial), tasaInteres(tasa) {
+CuentaAhorro::CuentaAhorro(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial,int diaNacimiento, int mesNacimiento, int anioNacimiento, double tasa)
+    : Cuenta(idCuenta, idUsuario, nombre, saldoInicial,diaNacimiento, mesNacimiento, anioNacimiento), tasaInteres(tasa) {
     if (tasa < 0) throw "Tasa de interes invalida";
 }
 

@@ -40,6 +40,8 @@ void Menu::mostrar() {
             std::cout << opciones[i] << std::endl;
         }
 
+        std::cout << "\nPresione 'H' para ayuda.";
+
         int tecla = _getch();
         if (tecla == 224) { // Teclas de flecha
             tecla = _getch();
@@ -55,14 +57,22 @@ void Menu::mostrar() {
                     id = ingresar_cedula("Ingrese ID: ");
                     nombre = ingresar_string("Ingrese Nombre completo: ");
                     monto = ingresar_float("Ingrese Saldo Inicial: ");
-                    banco.agregarCuentaAhorro(id.c_str(), nombre.c_str(), monto);
+                    FechaHora fechaNacimiento = ingresar_fecha_nacimiento_validada("Ingrese Fecha de Nacimiento (DD MM AAAA):\n");
+                    banco.agregarCuentaAhorro(id.c_str(), nombre.c_str(), monto, 
+                                             fechaNacimiento.obtenerDia(), 
+                                             fechaNacimiento.obtenerMes(), 
+                                             fechaNacimiento.obtenerAnio());
                     break;
                 }
                 case 1: { // Agregar Cuenta Corriente
                     id = ingresar_cedula("Ingrese ID: ");
                     nombre = ingresar_string("Ingrese Nombre completo: ");
                     monto = ingresar_float("Ingrese Saldo Inicial: ");
-                    banco.agregarCuentaCorriente(id.c_str(), nombre.c_str(), monto);
+                    FechaHora fechaNacimiento = ingresar_fecha_nacimiento_validada("Ingrese Fecha de Nacimiento (DD MM AAAA):\n");
+                    banco.agregarCuentaCorriente(id.c_str(), nombre.c_str(), monto, 
+                                                fechaNacimiento.obtenerDia(), 
+                                                fechaNacimiento.obtenerMes(), 
+                                                fechaNacimiento.obtenerAnio());
                     break;
                 }
                 case 2: { // Depositar
@@ -135,6 +145,22 @@ void Menu::mostrar() {
             }
             std::cout << "Presione cualquier tecla para continuar...";
             _getch();
+       } else if (tecla == 'H' || tecla == 'h') { // Opción de Ayuda
+            // Verificar si el archivo ayuda.html existe
+            std::ifstream archivoAyuda("ayuda.html");
+            if (!archivoAyuda) {
+                std::cerr << "\nError: No se pudo encontrar el archivo ayuda.html.\n";
+                std::cout << "Presione cualquier tecla para continuar...";
+                _getch();
+            } else {
+                archivoAyuda.close();
+                int resultado = system("start ayuda.html"); // Abrir ayuda.html en el navegador predeterminado (Windows)
+                if (resultado != 0) {
+                    std::cerr << "\nError: No se pudo abrir el archivo de ayuda. Asegurese de que un navegador este configurado.\n";
+                    std::cout << "Presione cualquier tecla para continuar...";
+                    _getch();
+                 }
+            }
         }
     }
 }

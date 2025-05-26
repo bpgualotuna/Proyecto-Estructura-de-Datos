@@ -11,4 +11,5 @@ string ingresar_string(const char* );
 string ingresar_cedula(const char* );
 string ingresar_nombre_archivo(const char* mensaje);
 FechaHora ingresar_fecha_validada(const char* mensaje);
+FechaHora ingresar_fecha_nacimiento_validada(const char* mensaje);
 #endif 

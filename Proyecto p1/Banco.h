@@ -23,8 +23,8 @@ private:
 public:
     Banco();
     ~Banco();
-    void agregarCuentaAhorro(const char* idUsuario, const char* nombre, double saldoInicial);
-    void agregarCuentaCorriente(const char* idUsuario, const char* nombre, double saldoInicial);
+    void agregarCuentaAhorro(const char* idUsuario, const char* nombre, double saldoInicial, int diaNacimiento, int mesNacimiento, int anioNacimiento);
+    void agregarCuentaCorriente(const char* idUsuario, const char* nombre, double saldoInicial, int diaNacimiento, int mesNacimiento, int anioNacimiento);
     void depositar(const char* idUsuario, double monto);
     void retirar(const char* idUsuario, double monto);
     void consultarSaldo(const char* idUsuario);

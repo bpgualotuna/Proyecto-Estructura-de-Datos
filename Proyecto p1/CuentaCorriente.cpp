@@ -1,7 +1,7 @@
 #include "CuentaCorriente.h"
 
-CuentaCorriente::CuentaCorriente(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial, double sobregiro)
-    : Cuenta(idCuenta, idUsuario, nombre, saldoInicial), limiteSobregiro(sobregiro) {
+CuentaCorriente::CuentaCorriente(const char* idCuenta, const char* idUsuario, const char* nombre, double saldoInicial, int diaNacimiento, int mesNacimiento, int anioNacimiento, double sobregiro)
+    : Cuenta(idCuenta, idUsuario, nombre, saldoInicial,diaNacimiento, mesNacimiento, anioNacimiento), limiteSobregiro(sobregiro) {
     if (sobregiro < 0) throw "Límite de sobregiro inválido";
 }
 
