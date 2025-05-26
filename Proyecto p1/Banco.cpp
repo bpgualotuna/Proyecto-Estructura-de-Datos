@@ -82,7 +82,7 @@ void Banco::depositar(const char* idUsuario, double monto) {
             *cuentaSeleccionada += monto;
             guardarEnArchivo();
             hacerCopiaSeguridadAutomatica();
-            std::cout << "Depósito de $" << monto << " realizado exitosamente en cuenta " << cuentaSeleccionada->obtenerIdCuenta() << ".\n";
+            std::cout << "Deposito de $" << monto << " realizado exitosamente en cuenta " << cuentaSeleccionada->obtenerIdCuenta() << ".\n";
             return;
         }
 
@@ -123,12 +123,12 @@ void Banco::depositar(const char* idUsuario, double monto) {
                     contador++;
                 });
 
-                if (!cuentaSeleccionada) throw "Selección inválida.";
+                if (!cuentaSeleccionada) throw "Seleccion invalida.";
 
                 *cuentaSeleccionada += monto;
                 guardarEnArchivo();
                 hacerCopiaSeguridadAutomatica();
-                std::cout << "Depósito de $" << monto << " realizado exitosamente en cuenta " << cuentaSeleccionada->obtenerIdCuenta() << ".\n";
+                std::cout << "Deposito de $" << monto << " realizado exitosamente en cuenta " << cuentaSeleccionada->obtenerIdCuenta() << ".\n";
                 break;
             }
         }
@@ -192,7 +192,7 @@ void Banco::retirar(const char* idUsuario, double monto) {
                     contador++;
                 });
 
-                if (!cuentaSeleccionada) throw "Selección inválida.";
+                if (!cuentaSeleccionada) throw "Seleccion invalida.";
 
                 if (!(*cuentaSeleccionada -= monto)) throw "Fondos insuficientes";
                 guardarEnArchivo();
@@ -275,7 +275,7 @@ void Banco::consultarSaldo(const char* idUsuario) {
                     contador++;
                 });
 
-                if (!cuentaSeleccionada) throw "Selección inválida.";
+                if (!cuentaSeleccionada) throw "Seleccion invalida.";
 
                 char* idCuenta = cuentaSeleccionada->obtenerIdCuenta();
                 char* tipo = cuentaSeleccionada->obtenerTipo();
@@ -309,12 +309,20 @@ void Banco::buscarPorRangoFechas(const FechaHora& inicio, const FechaHora& fin) 
     if (!encontrado) std::cout << "\nNo se encontraron cuentas en el rango de fechas.\n";
 }
 
+
 void Banco::buscarPersonalizado(const char* consulta) {
+    // Validar que la consulta no sea nula ni vacía
+    if (!consulta || strlen(consulta) == 0) {
+        std::cout << "Consulta invalida. Por favor, ingrese una consulta valida.\n";
+        return;
+    }
+
     bool encontrado = false;
     cuentas.recorrer([consulta, &encontrado](const Cuenta* cta) {
         char* idUsuario = cta->obtenerIdUsuario();
         char* nombre = cta->obtenerNombrePropietario();
-        if (strstr(idUsuario, consulta) || strstr(nombre, consulta)) {
+        // Verificar que idUsuario y nombre no sean nulos
+        if (idUsuario && nombre && (strstr(idUsuario, consulta) || strstr(nombre, consulta))) {
             char* idCuenta = cta->obtenerIdCuenta();
             char* tipo = cta->obtenerTipo();
             std::cout << "ID Cuenta: " << idCuenta << ", ID Usuario: " << idUsuario << ", Nombre: " << nombre << ", Tipo: " << tipo << ", Saldo: $" << cta->obtenerSaldo() << std::endl;
@@ -325,8 +333,11 @@ void Banco::buscarPersonalizado(const char* consulta) {
         delete[] idUsuario;
         delete[] nombre;
     });
-    if (!encontrado) std::cout << "No se encontraron cuentas que coincidan con la consulta.\n";
+    if (!encontrado) {
+        std::cout << "No se encontraron cuentas que coincidan con la consulta '" << consulta << "'.\n";
+    }
 }
+
 
 void Banco::buscarPorRangoSaldo(double min, double max) {
     bool encontrado = false;
@@ -404,7 +415,7 @@ void Banco::guardarEnArchivo() {
 void Banco::cargarDesdeArchivo() {
     std::ifstream archivo(archivoCuentas, std::ios::binary);
     if (!archivo) {
-        std::cout << "No se encontró archivo " << archivoCuentas << ". Iniciando con lista vacía.\n";
+        std::cout << "No se encontro archivo " << archivoCuentas << ". Iniciando con lista vacia.\n";
         return;
     }
     std::cout << "Abriendo " << archivoCuentas << " para cargar cuentas.\n";
