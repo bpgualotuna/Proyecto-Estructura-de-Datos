@@ -40,7 +40,7 @@ void Menu::mostrar() {
             std::cout << opciones[i] << std::endl;
         }
 
-        std::cout << "\nPresione 'H' para ayuda.";
+        
 
         int tecla = _getch();
         if (tecla == 224) { // Teclas de flecha
@@ -145,21 +145,24 @@ void Menu::mostrar() {
             }
             std::cout << "Presione cualquier tecla para continuar...";
             _getch();
-       } else if (tecla == 'H' || tecla == 'h') { // Opción de Ayuda
-            // Verificar si el archivo ayuda.html existe
-            std::ifstream archivoAyuda("ayuda.html");
-            if (!archivoAyuda) {
-                std::cerr << "\nError: No se pudo encontrar el archivo ayuda.html.\n";
-                std::cout << "Presione cualquier tecla para continuar...";
-                _getch();
-            } else {
-                archivoAyuda.close();
-                int resultado = system("start ayuda.html"); // Abrir ayuda.html en el navegador predeterminado (Windows)
-                if (resultado != 0) {
-                    std::cerr << "\nError: No se pudo abrir el archivo de ayuda. Asegurese de que un navegador este configurado.\n";
+       } else if (tecla == 0) { // Teclas de función (F1-F12)
+            tecla = _getch();
+            if (tecla == 60) { // F2
+                // Verificar si el archivo ayuda.html existe
+                std::ifstream archivoAyuda("ayuda.html");
+                if (!archivoAyuda) {
+                    std::cerr << "\nError: No se pudo encontrar el archivo ayuda.html.\n";
                     std::cout << "Presione cualquier tecla para continuar...";
                     _getch();
-                 }
+                } else {
+                    archivoAyuda.close();
+                    int resultado = system("start ayuda.html"); // Abrir ayuda.html en el navegador predeterminado (Windows)
+                    if (resultado != 0) {
+                        std::cerr << "\nError: No se pudo abrir el archivo de ayuda. Asegúrese de que un navegador esté configurado.\n";
+                        std::cout << "Presione cualquier tecla para continuar...";
+                        _getch();
+                    }
+                }
             }
         }
     }
