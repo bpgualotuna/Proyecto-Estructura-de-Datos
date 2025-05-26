@@ -5,8 +5,8 @@
 
 class Cifrado {
 public:
-    static char* cifrarMD5(const char* datos);
-    static char* descifrarMD5(const char* cifrado);
+    static char* cifrarMD5(const char* datos, size_t len, size_t& outLen);
+    static char* descifrarMD5(const char* cifrado, size_t len, size_t& outLen);
 };
 
 #endif

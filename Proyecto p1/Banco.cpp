@@ -365,15 +365,16 @@ void Banco::guardarEnArchivo() {
         int edad = cta->obtenerEdad();
         FechaHora fecha = cta->obtenerFechaCreacion();
 
-        char* idCifrado = Cifrado::cifrarMD5(id);
-        char* idUsuarioCifrado = Cifrado::cifrarMD5(idUsuario);
-        char* nombreCifrado = Cifrado::cifrarMD5(nombre);
-        char* tipoCifrado = Cifrado::cifrarMD5(tipo);
+        size_t outLen;
+        char* idCifrado = Cifrado::cifrarMD5(id, strlen(id), outLen);
+        char* idUsuarioCifrado = Cifrado::cifrarMD5(idUsuario, strlen(idUsuario), outLen);
+        char* nombreCifrado = Cifrado::cifrarMD5(nombre, strlen(nombre), outLen);
+        char* tipoCifrado = Cifrado::cifrarMD5(tipo, strlen(tipo), outLen);
 
-        size_t lenId = strlen(idCifrado) + 1;
-        size_t lenIdUsuario = strlen(idUsuarioCifrado) + 1;
-        size_t lenNombre = strlen(nombreCifrado) + 1;
-        size_t lenTipo = strlen(tipoCifrado) + 1;
+        size_t lenId = outLen + 1;
+        size_t lenIdUsuario = outLen + 1;
+        size_t lenNombre = outLen + 1;
+        size_t lenTipo = outLen + 1;
         archivo.write(reinterpret_cast<char*>(&lenId), sizeof(size_t));
         archivo.write(idCifrado, lenId);
         archivo.write(reinterpret_cast<char*>(&lenIdUsuario), sizeof(size_t));
@@ -495,10 +496,11 @@ void Banco::cargarDesdeArchivo() {
                 break;
             }
 
-            char* id = Cifrado::descifrarMD5(idCifrado);
-            char* idUsuario = Cifrado::descifrarMD5(idUsuarioCifrado);
-            char* nombre = Cifrado::descifrarMD5(nombreCifrado);
-            char* tipo = Cifrado::descifrarMD5(tipoCifrado);
+            size_t outLen;
+            char* id = Cifrado::descifrarMD5(idCifrado, lenId, outLen);
+            char* idUsuario = Cifrado::descifrarMD5(idUsuarioCifrado, lenIdUsuario, outLen);
+            char* nombre = Cifrado::descifrarMD5(nombreCifrado, lenNombre, outLen);
+            char* tipo = Cifrado::descifrarMD5(tipoCifrado, lenTipo, outLen);
             FechaHora fecha(dia, mes, anio, hora, minuto, segundo);
 
             if (!id || !idUsuario || !nombre || !tipo || strlen(id) == 0 || strlen(idUsuario) == 0 || strlen(nombre) == 0 || strlen(tipo) == 0) {
@@ -617,21 +619,41 @@ void Banco::cifrarArchivo(const char* archivo) {
         std::cerr << "Error al abrir " << archivo << " para cifrar.\n";
         return;
     }
-    std::ofstream archivoCifrado((std::string(archivo) + ".cifrado").c_str(), std::ios::binary);
+    std::string nombreCifrado = std::string(archivo) + ".cifrado";
+    std::ofstream archivoCifrado(nombreCifrado.c_str(), std::ios::binary);
     if (!archivoCifrado) {
-        std::cerr << "Error al crear archivo cifrado.\n";
+        std::cerr << "Error al crear archivo cifrado " << nombreCifrado << ".\n";
         archivoOriginal.close();
         return;
     }
+
     char buffer[1024];
     while (archivoOriginal.read(buffer, sizeof(buffer))) {
-        char* bufferCifrado = Cifrado::cifrarMD5(buffer);
-        archivoCifrado.write(bufferCifrado, strlen(bufferCifrado) + 1);
+        size_t bytesLeidos = archivoOriginal.gcount();
+        size_t outLen;
+        char* bufferCifrado = Cifrado::cifrarMD5(buffer, bytesLeidos, outLen);
+        archivoCifrado.write(reinterpret_cast<char*>(&outLen), sizeof(size_t)); // Escribir longitud
+        archivoCifrado.write(bufferCifrado, outLen); // Escribir datos cifrados
         delete[] bufferCifrado;
     }
+
+    // Manejar los bytes restantes (menos de 1024)
+    if (archivoOriginal.eof()) {
+        std::streamsize bytesRestantes = archivoOriginal.gcount();
+        if (bytesRestantes > 0) {
+            char ultimoBuffer[1024];
+            archivoOriginal.read(ultimoBuffer, bytesRestantes);
+            size_t outLen;
+            char* bufferCifrado = Cifrado::cifrarMD5(ultimoBuffer, bytesRestantes, outLen);
+            archivoCifrado.write(reinterpret_cast<char*>(&outLen), sizeof(size_t)); // Escribir longitud
+            archivoCifrado.write(bufferCifrado, outLen); // Escribir datos cifrados
+            delete[] bufferCifrado;
+        }
+    }
+
     archivoOriginal.close();
     archivoCifrado.close();
-    std::cout << "Archivo " << archivo << " cifrado exitosamente.\n";
+    std::cout << "Archivo " << archivo << " cifrado exitosamente como " << nombreCifrado << ".\n";
 }
 
 void Banco::descifrarArchivo(const char* archivo) {
@@ -640,19 +662,30 @@ void Banco::descifrarArchivo(const char* archivo) {
         std::cerr << "Error al abrir " << archivo << " para descifrar.\n";
         return;
     }
-    std::ofstream archivoDescifrado((std::string(archivo).substr(0, std::string(archivo).length() - 8)).c_str(), std::ios::binary);
+    std::string nombreDescifrado = std::string(archivo).substr(0, std::string(archivo).length() - 8); // Quitar ".cifrado"
+    std::ofstream archivoDescifrado(nombreDescifrado.c_str(), std::ios::binary);
     if (!archivoDescifrado) {
-        std::cerr << "Error al crear archivo descifrado.\n";
+        std::cerr << "Error al crear archivo descifrado " << nombreDescifrado << ".\n";
         archivoCifrado.close();
         return;
     }
+
     char buffer[1024];
-    while (archivoCifrado.read(buffer, sizeof(buffer))) {
-        char* bufferDescifrado = Cifrado::descifrarMD5(buffer);
-        archivoDescifrado.write(bufferDescifrado, strlen(bufferDescifrado) + 1);
-        delete[] bufferDescifrado;
+    while (archivoCifrado.read(reinterpret_cast<char*>(&buffer), sizeof(size_t))) {
+        size_t len;
+        archivoCifrado.read(reinterpret_cast<char*>(&len), sizeof(size_t));
+        if (len > 0 && len <= 1024) {
+            char* bufferCifrado = new char[len];
+            archivoCifrado.read(bufferCifrado, len);
+            size_t outLen;
+            char* bufferDescifrado = Cifrado::descifrarMD5(bufferCifrado, len, outLen);
+            archivoDescifrado.write(bufferDescifrado, outLen);
+            delete[] bufferCifrado;
+            delete[] bufferDescifrado;
+        }
     }
+
     archivoCifrado.close();
     archivoDescifrado.close();
-    std::cout << "Archivo " << archivo << " descifrado exitosamente.\n";
+    std::cout << "Archivo " << archivo << " descifrado exitosamente como " << nombreDescifrado << ".\n";
 }
