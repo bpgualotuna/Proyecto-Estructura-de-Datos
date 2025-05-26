@@ -1,19 +1,16 @@
 #include "Cifrado.h"
 
-char* Cifrado::cifrarMD5(const char* datos, size_t len, size_t& outLen) {
-    char* resultado = new char[len];
+// Simulación simplificada de MD5 (el MD5 real requiere una biblioteca)
+char* Cifrado::cifrarMD5(const char* datos) {
+    size_t len = strlen(datos);
+    char* resultado = new char[len + 1];
     for (size_t i = 0; i < len; i++) {
         resultado[i] = datos[i] ^ 0x5A; // Cifrado XOR simple
     }
-    outLen = len;
+    resultado[len] = '\0';
     return resultado;
 }
 
-char* Cifrado::descifrarMD5(const char* cifrado, size_t len, size_t& outLen) {
-    char* resultado = new char[len];
-    for (size_t i = 0; i < len; i++) {
-        resultado[i] = cifrado[i] ^ 0x5A; // Descifrado XOR simple (reversible)
-    }
-    outLen = len;
-    return resultado;
+char* Cifrado::descifrarMD5(const char* cifrado) {
+    return cifrarMD5(cifrado); // XOR es reversible
 }
