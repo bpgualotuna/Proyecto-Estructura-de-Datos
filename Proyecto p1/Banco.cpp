@@ -7,6 +7,7 @@
 #include <cstring>
 #include <sstream>
 #include <conio.h>
+#include <vector>
 
 Banco::Banco() : conteoAhorros(0), conteoCorrientes(0) {
     cargarDesdeArchivo();
@@ -614,78 +615,119 @@ void Banco::restaurar(const char* nombreArchivo) {
 }
 
 void Banco::cifrarArchivo(const char* archivo) {
-    std::ifstream archivoOriginal(archivo, std::ios::binary);
+    // Abrir el archivo para lectura
+    std::ifstream archivoOriginal(archivo, std::ios::binary | std::ios::ate);
     if (!archivoOriginal) {
         std::cerr << "Error al abrir " << archivo << " para cifrar.\n";
         return;
     }
-    std::string nombreCifrado = std::string(archivo) + ".cifrado";
-    std::ofstream archivoCifrado(nombreCifrado.c_str(), std::ios::binary);
-    if (!archivoCifrado) {
-        std::cerr << "Error al crear archivo cifrado " << nombreCifrado << ".\n";
+
+    // Obtener el tamaño del archivo
+    std::streamsize size = archivoOriginal.tellg();
+    archivoOriginal.seekg(0, std::ios::beg);
+
+    // Leer todo el contenido del archivo en un vector
+    std::vector<char> buffer(size);
+    if (size > 0 && !archivoOriginal.read(buffer.data(), size)) {
+        std::cerr << "Error al leer el contenido de " << archivo << ".\n";
         archivoOriginal.close();
         return;
     }
-
-    char buffer[1024];
-    while (archivoOriginal.read(buffer, sizeof(buffer))) {
-        size_t bytesLeidos = archivoOriginal.gcount();
-        size_t outLen;
-        char* bufferCifrado = Cifrado::cifrarMD5(buffer, bytesLeidos, outLen);
-        archivoCifrado.write(reinterpret_cast<char*>(&outLen), sizeof(size_t)); // Escribir longitud
-        archivoCifrado.write(bufferCifrado, outLen); // Escribir datos cifrados
-        delete[] bufferCifrado;
-    }
-
-    // Manejar los bytes restantes (menos de 1024)
-    if (archivoOriginal.eof()) {
-        std::streamsize bytesRestantes = archivoOriginal.gcount();
-        if (bytesRestantes > 0) {
-            char ultimoBuffer[1024];
-            archivoOriginal.read(ultimoBuffer, bytesRestantes);
-            size_t outLen;
-            char* bufferCifrado = Cifrado::cifrarMD5(ultimoBuffer, bytesRestantes, outLen);
-            archivoCifrado.write(reinterpret_cast<char*>(&outLen), sizeof(size_t)); // Escribir longitud
-            archivoCifrado.write(bufferCifrado, outLen); // Escribir datos cifrados
-            delete[] bufferCifrado;
-        }
-    }
-
     archivoOriginal.close();
-    archivoCifrado.close();
-    std::cout << "Archivo " << archivo << " cifrado exitosamente como " << nombreCifrado << ".\n";
+
+    // Cifrar el contenido en bloques de 1024 bytes
+    std::vector<char> resultado;
+    const size_t blockSize = 1024;
+    size_t pos = 0;
+
+    while (pos < size) {
+        size_t bytesToProcess = std::min(blockSize, static_cast<size_t>(size - pos));
+        size_t outLen;
+        char* bufferCifrado = Cifrado::cifrarMD5(buffer.data() + pos, bytesToProcess, outLen);
+
+        // Agregar el tamaño del bloque y los datos cifrados al resultado
+        resultado.insert(resultado.end(), reinterpret_cast<char*>(&outLen), reinterpret_cast<char*>(&outLen) + sizeof(size_t));
+        resultado.insert(resultado.end(), bufferCifrado, bufferCifrado + outLen);
+
+        delete[] bufferCifrado;
+        pos += bytesToProcess;
+    }
+
+    // Sobrescribir el archivo original con el contenido cifrado
+    std::ofstream archivoSalida(archivo, std::ios::binary | std::ios::trunc);
+    if (!archivoSalida) {
+        std::cerr << "Error al abrir " << archivo << " para escribir el contenido cifrado.\n";
+        return;
+    }
+
+    archivoSalida.write(resultado.data(), resultado.size());
+    archivoSalida.close();
+
+    std::cout << "Archivo " << archivo << " cifrado exitosamente.\n";
 }
 
 void Banco::descifrarArchivo(const char* archivo) {
-    std::ifstream archivoCifrado(archivo, std::ios::binary);
+    // Abrir el archivo para lectura
+    std::ifstream archivoCifrado(archivo, std::ios::binary | std::ios::ate);
     if (!archivoCifrado) {
         std::cerr << "Error al abrir " << archivo << " para descifrar.\n";
         return;
     }
-    std::string nombreDescifrado = std::string(archivo).substr(0, std::string(archivo).length() - 8); // Quitar ".cifrado"
-    std::ofstream archivoDescifrado(nombreDescifrado.c_str(), std::ios::binary);
-    if (!archivoDescifrado) {
-        std::cerr << "Error al crear archivo descifrado " << nombreDescifrado << ".\n";
+
+    // Obtener el tamaño del archivo
+    std::streamsize size = archivoCifrado.tellg();
+    archivoCifrado.seekg(0, std::ios::beg);
+
+    // Leer todo el contenido del archivo en un vector
+    std::vector<char> buffer(size);
+    if (size > 0 && !archivoCifrado.read(buffer.data(), size)) {
+        std::cerr << "Error al leer el contenido de " << archivo << ".\n";
         archivoCifrado.close();
         return;
     }
+    archivoCifrado.close();
 
-    char buffer[1024];
-    while (archivoCifrado.read(reinterpret_cast<char*>(&buffer), sizeof(size_t))) {
+    // Descifrar el contenido
+    std::vector<char> resultado;
+    size_t pos = 0;
+
+    while (pos < size) {
+        // Leer el tamaño del bloque cifrado
         size_t len;
-        archivoCifrado.read(reinterpret_cast<char*>(&len), sizeof(size_t));
-        if (len > 0 && len <= 1024) {
-            char* bufferCifrado = new char[len];
-            archivoCifrado.read(bufferCifrado, len);
-            size_t outLen;
-            char* bufferDescifrado = Cifrado::descifrarMD5(bufferCifrado, len, outLen);
-            archivoDescifrado.write(bufferDescifrado, outLen);
-            delete[] bufferCifrado;
-            delete[] bufferDescifrado;
+        if (pos + sizeof(size_t) > size) {
+            std::cerr << "Archivo cifrado corrupto: no se puede leer la longitud del bloque.\n";
+            return;
         }
+        memcpy(&len, buffer.data() + pos, sizeof(size_t));
+        pos += sizeof(size_t);
+
+        if (len <= 0 || len > 1024 || pos + len > size) {
+            std::cerr << "Archivo cifrado corrupto: longitud de bloque inválida.\n";
+            return;
+        }
+
+        // Leer el bloque cifrado y descifrarlo
+        char* bufferCifrado = new char[len];
+        memcpy(bufferCifrado, buffer.data() + pos, len);
+        pos += len;
+
+        size_t outLen;
+        char* bufferDescifrado = Cifrado::descifrarMD5(bufferCifrado, len, outLen);
+        resultado.insert(resultado.end(), bufferDescifrado, bufferDescifrado + outLen);
+
+        delete[] bufferCifrado;
+        delete[] bufferDescifrado;
     }
 
-    archivoCifrado.close();
-    archivoDescifrado.close();
-    std::cout << "Archivo " << archivo << " descifrado exitosamente como " << nombreDescifrado << ".\n";
+    // Sobrescribir el archivo original con el contenido descifrado
+    std::ofstream archivoSalida(archivo, std::ios::binary | std::ios::trunc);
+    if (!archivoSalida) {
+        std::cerr << "Error al abrir " << archivo << " para escribir el contenido descifrado.\n";
+        return;
+    }
+
+    archivoSalida.write(resultado.data(), resultado.size());
+    archivoSalida.close();
+
+    std::cout << "Archivo " << archivo << " descifrado exitosamente.\n";
 }
