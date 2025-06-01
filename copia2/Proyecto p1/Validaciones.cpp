@@ -173,7 +173,7 @@ float ingresar_saldo_inicial(const char *msj)
         }
         else
         {
-            std::cout << "\nError: Saldo inicial inválido, debe ser al menos $20\n";
+            std::cout << "\nError: Saldo inicial invalido, debe ser al menos $20\n";
             std::cout << "Presione cualquier tecla para continuar...";
             _getch(); // Esperar tecla antes de reintentar
             std::cout << std::endl;

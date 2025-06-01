@@ -79,7 +79,7 @@ void Menu::mostrar()
                 }
                 else
                 {
-                    std::cout << "Cédula existente encontrada. Usando datos existentes:\n";
+                    std::cout << "Cedula existente encontrada. Usando datos existentes:\n";
                     std::cout << "Nombre: " << nombre << ", Apellido: " << apellido << "\n";
                 }
 
