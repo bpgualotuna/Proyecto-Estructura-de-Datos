@@ -131,7 +131,7 @@ NodoAVLInt* ArbolAVL::obtenerRaiz() {
 
 void ArbolAVL::printTree() {
     if (raiz == nullptr) {
-        std::cout << "El árbol AVL está vacío" << std::endl;
+        std::cout << "El arbol AVL esta vacio" << std::endl;
         return;
     }
     printTree(raiz, "", false);
@@ -150,12 +150,12 @@ void ArbolAVL::printTree(NodoAVLInt* nodo, std::string prefix, bool isLeft) {
 }
 
 NodoAVLInt* ArbolAVL::buscar(int distancia) {
-    std::cout << "Árbol AVL antes de la búsqueda:" << std::endl;
+    std::cout << "Arbol AVL antes de la busqueda:" << std::endl;
     printTree();
     NodoAVLInt* nodo = raiz;
     while (nodo != nullptr) {
         if (distancia == nodo->distancia) {
-            std::cout << "Distancia " << distancia << " encontrada en el árbol." << std::endl;
+            std::cout << "Distancia " << distancia << " encontrada en el arbol." << std::endl;
             return nodo;
         }
         if (distancia < nodo->distancia) {
@@ -164,6 +164,6 @@ NodoAVLInt* ArbolAVL::buscar(int distancia) {
             nodo = nodo->derecho;
         }
     }
-    std::cout << "Distancia " << distancia << " no encontrada en el árbol." << std::endl;
+    std::cout << "Distancia " << distancia << " no encontrada en el arbol." << std::endl;
     return nullptr;
 }

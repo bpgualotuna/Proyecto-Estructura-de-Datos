@@ -29,6 +29,8 @@ public:
     bool operator==(const SucursalBancaria& otra) const;
     bool agendarCita(const std::string& cedula, const FechaHora& fecha, int hora);
     void mostrarCitas() const;
+    void guardarCitasEnArchivo() const;
+    void cargarCitasDesdeArchivo();
 };
 
 #endif

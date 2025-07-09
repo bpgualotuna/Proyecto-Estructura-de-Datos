@@ -117,7 +117,7 @@ void Menu::mostrar() {
         "Busqueda Hash",
         "Visualizacion de arbol AVL",
         "Convertir archivo a PDF",
-        "Generar código QR de cuenta",
+        "Generar codigo QR de cuenta",
         "Cambiar Fecha del Sistema",
         "Salir"};
     int conteoOpciones = 21;
