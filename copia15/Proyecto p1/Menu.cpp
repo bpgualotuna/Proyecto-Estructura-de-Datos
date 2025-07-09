@@ -115,7 +115,7 @@ void Menu::mostrar() {
         "Descifrar Archivo Binario",
         "Verificar Integridad del Archivo",
         "Busqueda Hash",
-        "Visualización de árbol AVL",
+        "Visualizacion de arbol AVL",
         "Convertir archivo a PDF",
         "Generar código QR de cuenta",
         "Cambiar Fecha del Sistema",
@@ -299,7 +299,7 @@ void Menu::mostrar() {
             case 16: { // Visualización de árbol AVL
     int cursorAVL = 0;
     const char* opcionesAVL[] = {
-        "Visualizar AVL por edad de dueños de cuentas (SFML)",
+        "Visualizar AVL por edad de duenios de cuentas (SFML)",
         "Visualizar AVL por distancias de sucursales (SFML)",
         "Visualizar AVL por edad de dueños de cuentas (Consola)",
         "Visualizar AVL por distancias de sucursales (Consola)",
@@ -310,7 +310,7 @@ void Menu::mostrar() {
     int conteoOpcionesAVL = 7;
     while (true) {
         system("cls");
-        std::cout << "\n=== VISUALIZACIÓN Y BÚSQUEDA DE ÁRBOL AVL ===\n";
+        std::cout << "\n=== VISUALIZACION Y BUSQUEDA DE ARBOL AVL ===\n";
         for (int i = 0; i < conteoOpcionesAVL; i++) {
             std::cout << (i == cursorAVL ? "> " : "  ");
             std::cout << opcionesAVL[i] << std::endl;
@@ -338,7 +338,7 @@ void Menu::mostrar() {
                 std::cout << "========================================" << std::endl;
                 std::cout << "          MOSTRAR ARBOL AVL (EDAD)      " << std::endl;
                 std::cout << "========================================" << std::endl;
-                sf::RenderWindow ventana(sf::VideoMode(1000, 1000), "Árbol AVL por Edad");
+                sf::RenderWindow ventana(sf::VideoMode(1000, 1000), "Arbol AVL por Edad");
                 sf::Font fuente;
                 if (!fuente.loadFromFile("C:\\Windows\\Fonts\\times.ttf")) {
                     std::cerr << "Error al cargar la fuente." << std::endl;
@@ -352,7 +352,7 @@ void Menu::mostrar() {
                         }
                     }
                     ventana.clear(sf::Color::Black);
-                    sf::Text texto("Mostrando Árbol AVL por Edad", fuente, 24);
+                    sf::Text texto("Mostrando Arbol AVL por Edad", fuente, 24);
                     texto.setFillColor(sf::Color::White);
                     sf::FloatRect bounds = texto.getLocalBounds();
                     float centerX = (ventana.getSize().x - bounds.width) / 2;
@@ -376,7 +376,7 @@ void Menu::mostrar() {
                 std::cout << "========================================" << std::endl;
                 std::cout << "          MOSTRAR ARBOL AVL (DISTANCIA) " << std::endl;
                 std::cout << "========================================" << std::endl;
-                sf::RenderWindow ventana(sf::VideoMode(1000, 1000), "Árbol AVL por Distancia");
+                sf::RenderWindow ventana(sf::VideoMode(1000, 1000), "Arbol AVL por Distancia");
                 sf::Font fuente;
                 if (!fuente.loadFromFile("C:\\Windows\\Fonts\\times.ttf")) {
                     std::cerr << "Error al cargar la fuente." << std::endl;
@@ -390,7 +390,7 @@ void Menu::mostrar() {
                         }
                     }
                     ventana.clear(sf::Color::Black);
-                    sf::Text texto("Mostrando Árbol AVL por Distancia", fuente, 24);
+                    sf::Text texto("Mostrando Arbol AVL por Distancia", fuente, 24);
                     texto.setFillColor(sf::Color::White);
                     sf::FloatRect bounds = texto.getLocalBounds();
                     float centerX = (ventana.getSize().x - bounds.width) / 2;
@@ -415,7 +415,7 @@ void Menu::mostrar() {
                 delete[] codigoSucursalActual;
                 system("cls");
                 std::cout << "========================================" << std::endl;
-                std::cout << "      ÁRBOL AVL POR EDAD (CONSOLA)      " << std::endl;
+                std::cout << "      ARBOL AVL POR EDAD (CONSOLA)      " << std::endl;
                 std::cout << "========================================" << std::endl;
                 arbolEdad.printTree();
                 std::cout << "\nPresione cualquier tecla para continuar...";
@@ -432,7 +432,7 @@ void Menu::mostrar() {
                 }
                 system("cls");
                 std::cout << "========================================" << std::endl;
-                std::cout << "    ÁRBOL AVL POR DISTANCIA (CONSOLA)   " << std::endl;
+                std::cout << "    ARBOL AVL POR DISTANCIA (CONSOLA)   " << std::endl;
                 std::cout << "========================================" << std::endl;
                 arbolDistancia.printTree();
                 std::cout << "\nPresione cualquier tecla para continuar...";
@@ -454,9 +454,7 @@ void Menu::mostrar() {
                 std::cout << "========================================" << std::endl;
                 std::cout << "      BUSCAR EDAD EN ÁRBOL AVL          " << std::endl;
                 std::cout << "========================================" << std::endl;
-                std::cout << "Ingrese la edad a buscar: ";
-                int edad;
-                std::cin >> edad;
+                int edad = ingresar_entero("Ingrese la edad a buscar: ");
                 arbolEdad.buscar(edad);
                 std::cout << "\nPresione cualquier tecla para continuar...";
                 _getch();
@@ -464,19 +462,15 @@ void Menu::mostrar() {
                 ArbolAVL arbolDistancia;
                 while (true) {
                     system("cls");
-                    std::cout << "Ingrese una distancia (o -1 para terminar): ";
-                    int distancia;
-                    std::cin >> distancia;
+                    int distancia = ingresar_entero("Ingrese una distancia (o -1 para terminar): ");
                     if (distancia == -1) break;
                     arbolDistancia.agregarDistancia(distancia);
                 }
                 system("cls");
                 std::cout << "========================================" << std::endl;
-                std::cout << "      BUSCAR DISTANCIA EN ÁRBOL AVL     " << std::endl;
+                std::cout << "      BUSCAR DISTANCIA EN ARBOL AVL     " << std::endl;
                 std::cout << "========================================" << std::endl;
-                std::cout << "Ingrese la distancia a buscar: ";
-                int distancia;
-                std::cin >> distancia;
+                int distancia = ingresar_entero("Ingrese la distancia a buscar: ");
                 arbolDistancia.buscar(distancia);
                 std::cout << "\nPresione cualquier tecla para continuar...";
                 _getch();
@@ -508,12 +502,12 @@ void Menu::mostrar() {
                 break;
             }
             case 18: { // Generar código QR de cuenta
-                std::string cedula = ingresar_cedula("Ingrese la cédula del titular: ");
+                std::string cedula = ingresar_cedula("Ingrese la cedula del titular: ");
                 auto cuentas = banco->buscarCuentasPorId(cedula.c_str());
                 int total = 0;
                 cuentas.recorrer([&total](Cuenta*){ total++; });
                 if (total == 0) {
-                    std::cout << "No se encontraron cuentas para esa cédula.\nPresione cualquier tecla para continuar...";
+                    std::cout << "No se encontraron cuentas para esa cedula.\nPresione cualquier tecla para continuar...";
                     _getch();
                     break;
                 }

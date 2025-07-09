@@ -121,3 +121,6 @@ marquesina: marquesina_sfml.cpp
 	$(CXX) $(CXXFLAGS) marquesina_sfml.cpp -o marquesina_sfml.exe $(SFML_FLAGS)
 
 .PHONY: all clean run marquesina
+
+
+

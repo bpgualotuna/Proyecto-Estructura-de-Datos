@@ -13,11 +13,12 @@
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{4D7339FF-47D2-4ADE-A2CA-404A12CAD4A1}
-AppName={#MyAppName}
-AppVersion={#MyAppVersion}
+AppName=Banco con Marquesina
+AppVersion=1.0
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={autopf}\{#MyAppName}
+DefaultDirName={autopf}\BancoMarquesina
+DefaultGroupName=BancoMarquesina
 UninstallDisplayIcon={app}\{#MyAppExeName}
 ; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
 ; on anything but x64 and Windows 11 on Arm.
@@ -32,9 +33,10 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
 OutputDir=C:\Users\USUARIO\Downloads
-OutputBaseFilename=Banco
+OutputBaseFilename=BancoMarquesina_Instalador
 SolidCompression=yes
 WizardStyle=modern
+Compression=lzma
 
 [Languages]
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
@@ -43,38 +45,16 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\ayuda.html"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Banco.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\banco.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Banco.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Cifrado.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Cifrado.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\copia_seguridad_20250601_132156.bin"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\copia_seguridad_20250601_132254.bin"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\copia_seguridad_20250601_132315.bin"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\copia_seguridad_20250601_132336.bin"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\copia_seguridad_20250601_132454.bin"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Cuenta.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Cuenta.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\CuentaAhorro.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\CuentaAhorro.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\CuentaCorriente.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\CuentaCorriente.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\cuentas.bin"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\estilos.css"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\FechaHora.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\FechaHora.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\ListaDobleCircular.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Main.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Menu.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Menu.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Nodo.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Validaciones.cpp"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\Validaciones.h"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\USUARIO\Desktop\Proyecto-Estructura-de-Datos\copia3\Proyecto p1\.vscode\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "banco.exe"; DestDir: "{app}"
+Source: "marquesina_sfml.exe"; DestDir: "{app}"
+Source: "*.dll"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "*.txt"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "*.css"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "*.png"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "*.pdf"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "*.pbm"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "*.pbm.png"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "*.md"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 
 [Registry]
 Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
@@ -85,59 +65,71 @@ Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}\shell\open\command"; Value
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{group}\Banco con Marquesina"; Filename: "{app}\banco.exe"
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[UserInfo]
+UserInfoPage=true
+UserInfoSerial=true
+
 [Code]
 var
-  PasswordPage: TInputQueryWizardPage;
-  GeneratedPassword: String;
+  ValidKeys: array[0..19] of String;
 
-// Generar una clave estilo Office (25 caracteres, 5 grupos de 5)
-function GeneratePassword: String;
-var
-  i, group: Integer;
-  Chars: String;
-  ResultPassword: String;
+procedure InitializeValidKeys();
 begin
-  Chars := 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  ResultPassword := '';
-  for group := 1 to 5 do
-  begin
-    for i := 1 to 5 do
-    begin
-      ResultPassword := ResultPassword + Chars[Random(Length(Chars)) + 1];
-    end;
-    if group < 5 then
-      ResultPassword := ResultPassword + '-';
-  end;
-  Result := ResultPassword;
+  ValidKeys[0] := 'BANC-2024-001';
+  ValidKeys[1] := 'BANC-2024-002';
+  ValidKeys[2] := 'BANC-2024-003';
+  ValidKeys[3] := 'BANC-2024-004';
+  ValidKeys[4] := 'BANC-2024-005';
+  ValidKeys[5] := 'BANC-2024-006';
+  ValidKeys[6] := 'BANC-2024-007';
+  ValidKeys[7] := 'BANC-2024-008';
+  ValidKeys[8] := 'BANC-2024-009';
+  ValidKeys[9] := 'BANC-2024-010';
+  ValidKeys[10] := 'BANC-2024-011';
+  ValidKeys[11] := 'BANC-2024-012';
+  ValidKeys[12] := 'BANC-2024-013';
+  ValidKeys[13] := 'BANC-2024-014';
+  ValidKeys[14] := 'BANC-2024-015';
+  ValidKeys[15] := 'BANC-2024-016';
+  ValidKeys[16] := 'BANC-2024-017';
+  ValidKeys[17] := 'BANC-2024-018';
+  ValidKeys[18] := 'BANC-2024-019';
+  ValidKeys[19] := 'BANC-2024-020';
 end;
 
-// Inicializar la página personalizada
-procedure InitializeWizard;
-begin
-  GeneratedPassword := GeneratePassword;
-  PasswordPage := CreateInputQueryPage(wpWelcome,
-    'Clave de Instalación', 'Por favor, ingrese la clave de instalación',
-    'La clave generada es: ' + GeneratedPassword + #13#10 +
-    'Por favor, ingrésela a continuación:');
-  PasswordPage.Add('Clave:', False);
-end;
-
-// Verificar la clave ingresada
 function NextButtonClick(CurPageID: Integer): Boolean;
+var
+  i: Integer;
+  key: String;
+  found: Boolean;
 begin
   Result := True;
-  if CurPageID = PasswordPage.ID then
+  if CurPageID = wpUserInfo then
   begin
-    if PasswordPage.Values[0] = GeneratedPassword then
-      MsgBox('Clave correcta. Continuando con la instalación.', mbInformation, MB_OK)
-    else
+    found := False;
+    key := WizardForm.UserInfoSerialEdit.Text;
+    for i := 0 to 19 do
     begin
-      MsgBox('Clave incorrecta. Por favor, intente de nuevo.', mbError, MB_OK);
+      if key = ValidKeys[i] then
+      begin
+        found := True;
+        break;
+      end;
+    end;
+    if not found then
+    begin
+      MsgBox('Clave incorrecta. Por favor, ingrese una clave válida.', mbError, MB_OK);
       Result := False;
     end;
   end;
+end;
+
+procedure InitializeWizard;
+begin
+  InitializeValidKeys();
 end;
