@@ -14,6 +14,7 @@
 #include "GeneradorPDF.h"
 #include "GeneradorQR.h"
 #include <windows.h>
+#include "MarquesinaBanner.h"
 
 Menu::Menu(ArbolAVLSucursales& arbol) : arbolSucursales(arbol), sucursalActual(nullptr) {
     horaActual.actualizarHoraActual();
@@ -173,6 +174,7 @@ void Menu::mostrar() {
 
     while (true) {
         system("cls");
+        std::cout << "\033[2;1H";
         char* horaStr = horaActual.aCadena();
         char* nombreSucursal = sucursalActual->obtenerNombre();
         std::cout << "Sucursal: " << nombreSucursal << " | Hora Actual: " << horaStr << "\n\n";
@@ -359,6 +361,7 @@ void Menu::mostrar() {
                 int conteoOpcionesAVL = 7;
                 while (true) {
                     system("cls");
+                    std::cout << "\033[2;1H";
                     std::cout << "\n=== VISUALIZACION Y BUSQUEDA DE ARBOL AVL ===\n";
                     for (int i = 0; i < conteoOpcionesAVL; i++) {
                         std::cout << (i == cursorAVL ? "> " : "  ");
@@ -384,6 +387,7 @@ void Menu::mostrar() {
                             });
                             delete[] codigoSucursalActual;
                             system("cls");
+                            std::cout << "\033[2;1H";
                             std::cout << "========================================" << std::endl;
                             std::cout << "          MOSTRAR ARBOL AVL (EDAD)      " << std::endl;
                             std::cout << "========================================" << std::endl;
@@ -415,6 +419,7 @@ void Menu::mostrar() {
                             ArbolAVL arbolDistancia;
                             while (true) {
                                 system("cls");
+                                std::cout << "\033[2;1H";
                                 std::cout << "Ingrese una distancia (o -1 para terminar): ";
                                 int distancia;
                                 std::cin >> distancia;
@@ -422,6 +427,7 @@ void Menu::mostrar() {
                                 arbolDistancia.agregarDistancia(distancia);
                             }
                             system("cls");
+                            std::cout << "\033[2;1H";
                             std::cout << "========================================" << std::endl;
                             std::cout << "          MOSTRAR ARBOL AVL (DISTANCIA) " << std::endl;
                             std::cout << "========================================" << std::endl;
@@ -463,6 +469,7 @@ void Menu::mostrar() {
                             });
                             delete[] codigoSucursalActual;
                             system("cls");
+                            std::cout << "\033[2;1H";
                             std::cout << "========================================" << std::endl;
                             std::cout << "      ARBOL AVL POR EDAD (CONSOLA)      " << std::endl;
                             std::cout << "========================================" << std::endl;
@@ -473,12 +480,14 @@ void Menu::mostrar() {
                             ArbolAVL arbolDistancia;
                             while (true) {
                                 system("cls");
+                                std::cout << "\033[2;1H";
                                 std::cout << "Ingrese una distancia (o 0 para terminar): ";
                                 int distancia = ingresar_entero(" ");
                                 if (distancia == 0) break;
                                 arbolDistancia.agregarDistancia(distancia);
                             }
                             system("cls");
+                            std::cout << "\033[2;1H";
                             std::cout << "========================================" << std::endl;
                             std::cout << "    ARBOL AVL POR DISTANCIA (CONSOLA)   " << std::endl;
                             std::cout << "========================================" << std::endl;
@@ -499,6 +508,7 @@ void Menu::mostrar() {
                             });
                             delete[] codigoSucursalActual;
                             system("cls");
+                            std::cout << "\033[2;1H";
                             std::cout << "========================================" << std::endl;
                             std::cout << "      BUSCAR EDAD EN ARBOL AVL          " << std::endl;
                             std::cout << "========================================" << std::endl;
@@ -510,12 +520,14 @@ void Menu::mostrar() {
                             ArbolAVL arbolDistancia;
                             while (true) {
                                 system("cls");
+                                std::cout << "\033[2;1H";
                                 std::cout << "Ingrese una distancia (o 0 para terminar): ";
                                 int distancia = ingresar_entero(" ");
                                 if (distancia == 0) break;
                                 arbolDistancia.agregarDistancia(distancia);
                             }
                             system("cls");
+                            std::cout << "\033[2;1H";
                             std::cout << "========================================" << std::endl;
                             std::cout << "      BUSCAR DISTANCIA EN ARBOL AVL     " << std::endl;
                             std::cout << "========================================" << std::endl;
@@ -560,6 +572,7 @@ void Menu::mostrar() {
                 int cursor = 0;
                 while (true) {
                     system("cls");
+                    std::cout << "\033[2;1H";
                     std::cout << "Seleccione la cuenta para generar el QR:\n\n";
                     int idx = 0;
                     cuentas.recorrer([&](Cuenta* cta){

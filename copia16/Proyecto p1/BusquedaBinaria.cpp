@@ -20,6 +20,7 @@ void BusquedaBinaria::mostrarMenu() {
 
     while (true) {
         system("cls");
+        std::cout << "\033[2;1H";
         std::cout << "Menu de Busqueda Binaria\n\n";
         for (int i = 0; i < conteoOpciones; i++) {
             if (i == cursor)
